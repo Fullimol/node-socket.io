@@ -1,12 +1,40 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 
-<h1>Chat</h1>
+<h1 class="text-danger">Chat</h1>
+
+<ul></ul>
+
+<form action="" class="d-flex">
+    <input type="text" class="form-control" placeholder="ingrese mensaje">
+    <button class="btn btn-primary">Enviar</button>
+</form>
+
+
 
 <script>
-    // Del lado del cliente, me conecto al servidor
-    var socket = io.connect("http://localhost:8080/");
+    var socket = io.connect("http://localhost:8080/");  // Del lado del cliente, me conecto al servidor
     // Y cuando desde el server me llega un mensaje, hago algo con ese mensaje.
-    socket.on("mensaje", function (datos) {
-        console.log(datos);
-    });
+    socket.on("ejemplo-nombre del mensaje", function (datos) {
+        console.log(datos)
+    })
+
+    //Aca establezco los eventos -usando JS-
+    const form = document.querySelector('form')
+    const input = document.querySelector('input')
+    let mensajes = document.querySelector('ul')
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        if (input.value) {
+            socket.emit('chat message', input.value) //enviamos por socket el valor del input como un mensaje llamado "chat message"
+            input.value = ""
+        }
+    })
+
+    socket.on('chat message', (mensaje) => { //Capturamos el mensaje enviado de algun cliente y lo mostramos.
+        let item = document.createElement('li')
+        item.textContent = mensaje
+        mensajes.appendChild(item)
+        window.scrollTo(0, document.body.scrollHeight)
+    })
 </script>

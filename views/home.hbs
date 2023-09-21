@@ -1,0 +1,12 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+
+<h1>Chat</h1>
+
+<script>
+    // Del lado del cliente, me conecto al servidor
+    var socket = io.connect("http://localhost:8080/");
+    // Y cuando desde el server me llega un mensaje, hago algo con ese mensaje.
+    socket.on("mensaje", function (datos) {
+        console.log(datos);
+    });
+</script>
